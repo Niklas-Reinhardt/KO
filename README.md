@@ -1,4 +1,4 @@
-README for the Replication Code for "Educating Retail Investors in a Billion-Euro Market" by Alexander Klos and Niklas Reinhardt (as of August 2026)
+README for the Replication Code for "Educating All Retail Investors in a Billion-Euro Market" by Alexander Klos and Niklas Reinhardt (as of August 2026)
 
 Link to the paper:
 
