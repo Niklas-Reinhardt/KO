@@ -11,9 +11,9 @@ library(kableExtra)
 options(scipen = 999)
 
 #Function to output formatted coefficient estimates with t-stats in parentheses
-est_tstat = function(regression, regressor, digits = 2) {
+est_tstat = function(regression, regressor, digits = 2, digits_t = 2) {
   estimate = format(round(regression[regressor, "Estimate"], digits), nsmall = digits, big.mark = ",")
-  t_stat = paste0("(", format(round(regression[regressor, "t value"], digits), nsmall = digits, big.mark = ","), ")")
+  t_stat = paste0("(", format(round(regression[regressor, "t value"], digits_t), nsmall = digits_t, big.mark = ","), ")")
   all_together = c(estimate, t_stat)
   return(all_together)
 }
