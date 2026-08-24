@@ -1,7 +1,7 @@
 README for the Replication Code for "Educating All Retail Investors in a Billion-Euro Market" by Alexander Klos and Niklas Reinhardt (as of August 2026)
 
 Link to the paper:
-
+https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7345658
 
 How to replicate the results:
 Running the R scripts in "Code" sequentially from 01 through 10 replicates the figures, tables, and numbers in our paper.
