@@ -116,15 +116,15 @@ model_2 = lm(DiffInLogVolume_Gettex_SIX ~ Intervention, data[Type == "KO"])
 coeftable_2 = coeftest(model_2, vcov. = NeweyWest(model_2, prewhite = FALSE, adjust = TRUE))
 print(coeftable_2)
 
-model_3 = lm(DiffInLogVolume_Frankfurt_SIX ~ Intervention, data[Type == "KO" & month(Date) == 6])
+model_3 = lm(DiffInLogNumTrades_Gettex_SIX ~ Intervention, data[Type == "KO"])
 coeftable_3 = coeftest(model_3, vcov. = NeweyWest(model_3, prewhite = FALSE, adjust = TRUE))
 print(coeftable_3)
 
-model_4 = lm(DiffInLogVolume_Gettex_SIX ~ Intervention, data[Type == "KO" & month(Date) == 6])
+model_4 = lm(DiffInLogVolume_Frankfurt_SIX ~ Intervention, data[Type == "KO" & month(Date) == 6])
 coeftable_4 = coeftest(model_4, vcov. = NeweyWest(model_4, prewhite = FALSE, adjust = TRUE))
 print(coeftable_4)
 
-model_5 = lm(DiffInLogNumTrades_Gettex_SIX ~ Intervention, data[Type == "KO"])
+model_5 = lm(DiffInLogVolume_Gettex_SIX ~ Intervention, data[Type == "KO" & month(Date) == 6])
 coeftable_5 = coeftest(model_5, vcov. = NeweyWest(model_5, prewhite = FALSE, adjust = TRUE))
 print(coeftable_5)
 
@@ -173,17 +173,17 @@ results[results$Var %in% c("Intercept", "t_Intercept"), "(3)" := est_tstat(coeft
 results[results$Var %in% c("Post intervention", "t_Intervention"), "(3)" := est_tstat(coeftable_3, "Intervention")]
 results[Var == "$N$", "(3)" := length(model_3$residuals)]
 results[Var == "$R^2$", "(3)" := format(round(summary(model_3)$r.squared, 2), nsmall = 2)]
-results[Var == "Exchanges", "(3)" := "Frankfurt"]
+results[Var == "Exchanges", "(3)" := "Gettex"]
 results[Var == "Exchanges_2", "(3)" := "vs.\\ SIX"]
-results[Var == "Variable", "(3)" := "Volume"]
-results[Var == "Time period", "(3)" := "June"]
+results[Var == "Variable", "(3)" := "NumTrds"]
+results[Var == "Time period", "(3)" := "May-July"]
 
 #Fill model 4
 results[results$Var %in% c("Intercept", "t_Intercept"), "(4)" := est_tstat(coeftable_4, "(Intercept)")]
 results[results$Var %in% c("Post intervention", "t_Intervention"), "(4)" := est_tstat(coeftable_4, "Intervention")]
 results[Var == "$N$", "(4)" := length(model_4$residuals)]
 results[Var == "$R^2$", "(4)" := format(round(summary(model_4)$r.squared, 2), nsmall = 2)]
-results[Var == "Exchanges", "(4)" := "Gettex"]
+results[Var == "Exchanges", "(4)" := "Frankfurt"]
 results[Var == "Exchanges_2", "(4)" := "vs.\\ SIX"]
 results[Var == "Variable", "(4)" := "Volume"]
 results[Var == "Time period", "(4)" := "June"]
@@ -195,8 +195,8 @@ results[Var == "$N$", "(5)" := length(model_5$residuals)]
 results[Var == "$R^2$", "(5)" := format(round(summary(model_5)$r.squared, 2), nsmall = 2)]
 results[Var == "Exchanges", "(5)" := "Gettex"]
 results[Var == "Exchanges_2", "(5)" := "vs.\\ SIX"]
-results[Var == "Variable", "(5)" := "NumTrds"]
-results[Var == "Time period", "(5)" := "May-July"]
+results[Var == "Variable", "(5)" := "Volume"]
+results[Var == "Time period", "(5)" := "June"]
 
 #Fill model 6
 results[results$Var %in% c("Intercept", "t_Intercept"), "(6)" := est_tstat(coeftable_6, "(Intercept)")]
@@ -651,37 +651,37 @@ a = ggplot(data[Type == "KO"], aes(x = Date, y = DiffInLogVolume_Frankfurt_SIX))
   theme_classic() + 
   theme(plot.title = element_text(hjust = 0.5, face = "bold")) 
 
-##### 9.2 OtherLeverage: Frankfurt vs. SIX #####
-b_m1 = data[Type == "OtherLeverage" & Date < intervention_date, mean(DiffInLogVolume_Frankfurt_SIX)]
-b_m2 = data[Type == "OtherLeverage" & Date >= intervention_date, mean(DiffInLogVolume_Frankfurt_SIX)]
-b = ggplot(data[Type == "OtherLeverage"], aes(x = Date, y = DiffInLogVolume_Frankfurt_SIX)) + 
-  geom_line() + 
-  geom_point() +
-  scale_x_date(date_labels = "%m/%d", breaks = seq(start_event_window + days(4), end_event_window, by = "3 weeks")) +
-  scale_y_continuous(limits = c(-1.5, -1.5 + 2.15)) +
-  geom_segment(aes(x = start_event_window, xend = intervention_date, y = b_m1, yend = b_m1), color = "blue") +
-  geom_segment(aes(x = intervention_date, xend = end_event_window, y = b_m2, yend = b_m2), color = "red") +
-  geom_vline(xintercept = intervention_date, linetype = "dashed", color = "red") +
-  xlab(NULL) +
-  ylab("log(VolumeFrankfurt) - log(VolumeSIX)") +
-  ggtitle("B: Other leverage products:\nFrankfurt vs. SIX") + 
-  theme_classic() + 
-  theme(plot.title = element_text(hjust = 0.5, face = "bold")) 
-
-##### 9.3 KO: Gettex vs. SIX #####
-c_m1 = data[Type == "KO" & Date < intervention_date, mean(DiffInLogVolume_Gettex_SIX)]
-c_m2 = data[Type == "KO" & Date >= intervention_date, mean(DiffInLogVolume_Gettex_SIX)]
-c = ggplot(data[Type == "KO"], aes(x = Date, y = DiffInLogVolume_Gettex_SIX)) + 
+##### 9.2 KO: Gettex vs. SIX #####
+b_m1 = data[Type == "KO" & Date < intervention_date, mean(DiffInLogVolume_Gettex_SIX)]
+b_m2 = data[Type == "KO" & Date >= intervention_date, mean(DiffInLogVolume_Gettex_SIX)]
+b = ggplot(data[Type == "KO"], aes(x = Date, y = DiffInLogVolume_Gettex_SIX)) + 
   geom_line() + 
   geom_point() +
   scale_x_date(date_labels = "%m/%d", breaks = seq(start_event_window + days(4), end_event_window, by = "3 weeks")) +
   scale_y_continuous(limits = c(2.15, 2.15 + 2.15)) +
+  geom_segment(aes(x = start_event_window, xend = intervention_date, y = b_m1, yend = b_m1), color = "blue") +
+  geom_segment(aes(x = intervention_date, xend = end_event_window, y = b_m2, yend = b_m2), color = "red") +
+  geom_vline(xintercept = intervention_date, linetype = "dashed", color = "red") +
+  xlab(NULL) +
+  ylab("log(VolumeGettex) - log(VolumeSIX)") +
+  ggtitle("B: Knock-out certificates:\nGettex vs. SIX") + 
+  theme_classic() + 
+  theme(plot.title = element_text(hjust = 0.5, face = "bold")) 
+
+##### 9.3 OtherLeverage: Frankfurt vs. SIX #####
+c_m1 = data[Type == "OtherLeverage" & Date < intervention_date, mean(DiffInLogVolume_Frankfurt_SIX)]
+c_m2 = data[Type == "OtherLeverage" & Date >= intervention_date, mean(DiffInLogVolume_Frankfurt_SIX)]
+c = ggplot(data[Type == "OtherLeverage"], aes(x = Date, y = DiffInLogVolume_Frankfurt_SIX)) + 
+  geom_line() + 
+  geom_point() +
+  scale_x_date(date_labels = "%m/%d", breaks = seq(start_event_window + days(4), end_event_window, by = "3 weeks")) +
+  scale_y_continuous(limits = c(-1.5, -1.5 + 2.15)) +
   geom_segment(aes(x = start_event_window, xend = intervention_date, y = c_m1, yend = c_m1), color = "blue") +
   geom_segment(aes(x = intervention_date, xend = end_event_window, y = c_m2, yend = c_m2), color = "red") +
   geom_vline(xintercept = intervention_date, linetype = "dashed", color = "red") +
   xlab(NULL) +
-  ylab("log(VolumeGettex) - log(VolumeSIX)") +
-  ggtitle("C: Knock-out certificates:\nGettex vs. SIX") + 
+  ylab("log(VolumeFrankfurt) - log(VolumeSIX)") +
+  ggtitle("C: Other leverage products:\nFrankfurt vs. SIX") + 
   theme_classic() + 
   theme(plot.title = element_text(hjust = 0.5, face = "bold")) 
 
