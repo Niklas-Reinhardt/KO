@@ -21,4 +21,5 @@ Required R packages:
 
 License:
 The code in this repository is licensed under the MIT License. 
-The data are subject to the terms and conditions of the respective data providers.
+The underlying data are subject to the terms and conditions of the respective data providers and applicable statutory rights and restrictions. 
+Users are responsible for obtaining and using the data in accordance with the applicable terms and conditions.
