@@ -11,9 +11,9 @@
 #Reports from February 2025 through December 2025 in "Data/BSW/Reports_202502_to_202512/"
 
 #### 1. Preamble ####
-library(data.table)
-library(lubridate)
-library(pdftools)
+packages = c("data.table", "lubridate", "pdftools")
+library("groundhog")
+groundhog.library(packages, "2026-08-26")
 
 #Function to split lines based on two or more whitespaces
 split_line = function(x) {

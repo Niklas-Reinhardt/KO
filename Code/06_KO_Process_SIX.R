@@ -12,8 +12,9 @@
 #Note: The replication requires data from 2023 through July 2026.
 
 #### 1. Preamble ####
-library(data.table)
-library(lubridate)
+packages = c("data.table", "lubridate")
+library("groundhog")
+groundhog.library(packages, "2026-08-26")
 
 #### 2. Data processing ####
 ##### 2.1 Import #####

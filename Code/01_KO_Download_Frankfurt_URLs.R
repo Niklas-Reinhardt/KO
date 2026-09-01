@@ -1,13 +1,12 @@
 ### KO: Download Frankfurt URLs ###
 
 #### 1. Preamble ####
-#Libraries
-library(httr2)
-library(stringr)
-library(curl)
+packages = c("httr2", "stringr", "curl")
+library("groundhog")
+groundhog.library(packages, "2026-08-26")
 
 #Parameters
-user_agent = "Mozilla/5.0 (academic research scraper)"
+user_agent = "AcademicResearchScraper"
 page_url_template = paste0("https://www.cashmarket.deutsche-boerse.com",
                            "/cash-de/Daten-Tech/statistiken/Zertifikate-und-Optionsscheine/",
                            "tagesstatistik-boerse-frankfurt-zertifikate-und-optionsscheine/",

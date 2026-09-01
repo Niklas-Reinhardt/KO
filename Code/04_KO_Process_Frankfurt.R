@@ -1,9 +1,9 @@
 ### KO: Process Frankfurt ###
 
 #### 1. Preamble ####
-library(data.table)
-library(lubridate)
-library(readxl)
+packages = c("data.table", "lubridate", "readxl")
+library("groundhog")
+groundhog.library(packages, "2026-08-26")
 options(scipen = 999)
 
 #### 2. Data import ####

@@ -1,15 +1,12 @@
 ### KO: Download Frankfurt Files ###
 
 #### 1. Preamble ####
-#Libraries
-library(data.table)
-library(lubridate)
-library(httr2)
-library(stringr)
-library(curl)
+packages = c("data.table", "lubridate", "httr2", "stringr", "curl")
+library("groundhog")
+groundhog.library(packages, "2026-08-26")
 
 #Parameters
-user_agent = "Mozilla/5.0 (academic research scraper)"
+user_agent = "AcademicResearchScraper"
 max_num_downloads = 10000
 
 #### 2. Links to download ####

@@ -1,13 +1,9 @@
 ### KO: Analyses Additional ###
 
 #### 1. Preamble ####
-library(data.table)
-library(lubridate)
-library(ggplot2)
-library(gridExtra)
-library(sandwich)
-library(lmtest)
-library(kableExtra)
+packages = c("data.table", "lubridate", "ggplot2", "gridExtra", "sandwich", "lmtest", "kableExtra")
+library("groundhog")
+groundhog.library(packages, "2026-08-26")
 options(scipen = 999)
 
 #Function to output formatted coefficient estimates with t-stats in parentheses

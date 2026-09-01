@@ -1,10 +1,12 @@
 ### KO: Download Gettex ###
 
 #### 1. Preamble ####
-library(data.table)
-library(lubridate)
+packages = c("data.table", "lubridate", "httr2")
+library("groundhog")
+groundhog.library(packages, "2026-08-26")
 
 #Parameters
+user_agent = "AcademicResearchScraper"
 dates_to_download = seq(ymd("2021-01-01"), ymd("2026-07-31"), by = "day")
 dates_to_download = dates_to_download[!(weekdays(dates_to_download) %in% c("Saturday", "Sunday"))]
 dates_already_downloaded = list.files("Data/Gettex")
@@ -29,7 +31,9 @@ for (i in 1:length(dates_to_download)) {
   cat("Downloading", d_formatted, "...\n")
   
   success = tryCatch({
-    download.file(url, zipfile, mode = "wb", quiet = TRUE)
+    request(url) |>
+      req_user_agent(user_agent) |>
+      req_perform(path = zipfile)
     TRUE
   }, warning = function(w) {
     FALSE

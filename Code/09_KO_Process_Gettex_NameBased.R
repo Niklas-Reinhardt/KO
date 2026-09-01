@@ -1,8 +1,9 @@
 ### KO: Process Gettex with Name-Based Identification ###
 
 #### 1. Preamble ####
-library(data.table)
-library(lubridate)
+packages = c("data.table", "lubridate")
+library("groundhog")
+groundhog.library(packages, "2026-08-26")
 
 #### 2. Data processing ####
 dates_list = list.files("Data/Gettex")
