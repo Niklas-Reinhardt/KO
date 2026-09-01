@@ -16,8 +16,10 @@ Data for SIX and BSW can be downloaded from the websites linked in scripts 06 an
 Main results and additional results:
 To replicate our main results, only scripts 01 through 07 have to be run and it is not necessary to download the BSW data.
 
-Required R packages:
-"httr2", "stringr", "curl" ,"data.table", "lubridate", "readxl", "ggplot2", "gridExtra", "sandwich", "lmtest", "kableExtra", "pdftools"
+R version: 4.6.1
+
+Required R packages (package versions as of August 26, 2026 are controlled using groundhog):
+"groundhog", "httr2", "stringr", "curl" ,"data.table", "lubridate", "readxl", "ggplot2", "gridExtra", "sandwich", "lmtest", "kableExtra", "pdftools"
 
 License:
 The code in this repository is licensed under the MIT License. 
