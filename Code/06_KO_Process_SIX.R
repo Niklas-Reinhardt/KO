@@ -18,7 +18,7 @@ groundhog.library(packages, "2026-08-26")
 
 #### 2. Data processing ####
 ##### 2.1 Import #####
-filename_list = list.files("Data/SIX/", recursive = TRUE, full.names = TRUE)
+filename_list = list.files("Data/SIX/", pattern = "\\.csv$", recursive = TRUE, full.names = TRUE)
 results_list = list()
 i = 1
 for (f in filename_list) {

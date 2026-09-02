@@ -1,7 +1,7 @@
 ### KO: Process Frankfurt ###
 
 #### 1. Preamble ####
-packages = c("data.table", "lubridate", "readxl")
+packages = c("zoo", "data.table", "lubridate", "readxl")
 library("groundhog")
 groundhog.library(packages, "2026-08-26")
 options(scipen = 999)
@@ -26,8 +26,9 @@ downloadable_files[, Date := ymd(gsub(".*\\.(\\d{8})\\.xls$", "\\1", FileName))]
 downloadable_files[, N_Date := .N, by = Date]
 duplicate_dates = downloadable_files[N_Date > 1, .(Date, FileName)]
 print(setorder(duplicate_dates, Date, FileName))
+#6 duplicate files in 2014 and 2 in 2021
 
-for (i in 1:(nrow(duplicate_dates)/2)) {
+for (i in seq_len(nrow(duplicate_dates)/2)) {
   temp_1 = as.data.table(read_xls(paste0("Data/Frankfurt/DailyStatistics/", duplicate_dates[i*2-1, FileName]), sheet = "Data", skip = 10))
   temp_2 = as.data.table(read_xls(paste0("Data/Frankfurt/DailyStatistics/", duplicate_dates[i*2, FileName]), sheet = "Data", skip = 10))
 
@@ -38,7 +39,7 @@ for (i in 1:(nrow(duplicate_dates)/2)) {
   rm(temp_1, temp_2)
 }
 #Data for the two files on duplicate dates are exactly the same.
-#Keep only the "BoerseFrankfurt..." files and drop the "Scoach..." files:
+#Keep only the "BoerseFrankfurt..." duplicates and drop the "Scoach..." duplicates:
 filenames = filenames[!(FileName %in% duplicate_dates[FileName %like% "Scoach", FileName])]
 rm(duplicate_dates, downloadable_files)
 
@@ -52,7 +53,8 @@ for (i in 1:nrow(filenames)) {
 }
 print(unique(filenames$SheetNames))
 print(filenames[SheetNames != "Cover, Data"])
-#Just one file with different sheet names
+#Just one file with different sheet names in 2015
+
 filenames_regular = filenames[SheetNames == "Cover, Data", FileName]
 filename_extra = filenames[SheetNames != "Cover, Data", FileName]
 rm(filenames)
@@ -95,18 +97,21 @@ d = d[, .(Date = DateFromCoverSheet,
           Volume = `Client Order Book Turnover EUR`)]
 
 ##### 2.5 Import extra file #####
-temp = as.data.table(read_xls(paste0("Data/Frankfurt/DailyStatistics/", filename_extra), 
-                              sheet = "Börse Frankfurt Zertifikate", skip = 13))
-temp[, Date := dmy(read_xls(paste0("Data/Frankfurt/DailyStatistics/", filename_extra), sheet = "Cover", range = "C25", col_names = "Date")$Date)]
-temp = temp[, .(Date,
-                Group = `Instrument Group`,
-                InstrumentType = `Instrument Type`, 
-                Volume = Euro)]
-temp[9, InstrumentType := "Total"]  #Total investment products
-temp[14, InstrumentType := "Total"] #Total leverage products
-temp[15, Group := "Total"] #Total products
-d = rbind(d, temp)
-rm(filename_extra, temp)
+if (length(filename_extra) > 0) {
+  temp = as.data.table(read_xls(paste0("Data/Frankfurt/DailyStatistics/", filename_extra), 
+                                sheet = "Börse Frankfurt Zertifikate", skip = 13))
+  temp[, Date := dmy(read_xls(paste0("Data/Frankfurt/DailyStatistics/", filename_extra), sheet = "Cover", range = "C25", col_names = "Date")$Date)]
+  temp = temp[, .(Date,
+                  Group = `Instrument Group`,
+                  InstrumentType = `Instrument Type`, 
+                  Volume = Euro)]
+  temp[9, InstrumentType := "Total"]  #Total investment products
+  temp[14, InstrumentType := "Total"] #Total leverage products
+  temp[15, Group := "Total"] #Total products
+  d = rbind(d, temp)
+  rm(temp)
+}
+rm(filename_extra)
 
 #### 3. Basic processing ####
 #Check groups and types:
@@ -122,7 +127,7 @@ d = d[!(is.na(Volume))]
 
 #The first Total is for investment products, the second Total for leverage products.
 #Fill the correct groups for each type:
-d[, Group_Filled := zoo::na.locf(Group), by = Date]
+d[, Group_Filled := na.locf(Group), by = Date]
 print(setorder(d[, .N, by = .(Group_Filled, InstrumentType)], Group_Filled, -N))
 
 #Only keep leverage products:
@@ -148,7 +153,7 @@ rm(check)
 data_fra = data_fra[Type != "Total"]
 
 #Check unique dates
-print(summary(data_fra[, .N, by = Date])) #3 observations per date
+print(summary(data_fra[, .N, by = Date])) #2 observations per date
 unique_dates = unique(data_fra[, .(Date)])
 setorder(unique_dates, Date)
 unique_dates[, Date_Diff := Date - shift(Date)]
