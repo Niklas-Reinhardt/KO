@@ -19,7 +19,7 @@ To replicate our main results, only scripts 01 through 07 have to be run and it 
 R version: 4.6.1
 
 Required R packages (package versions as of August 26, 2026 are controlled using groundhog):
-"groundhog", "httr2", "stringr", "curl", "data.table", "lubridate", "readxl", "ggplot2", "gridExtra", "sandwich", "lmtest", "kableExtra", "pdftools"
+"groundhog", "httr2", "stringr", "curl", "data.table", "lubridate", "zoo", "readxl", "ggplot2", "gridExtra", "sandwich", "lmtest", "kableExtra", "pdftools"
 
 License:
 The code in this repository is licensed under the MIT License. 
