@@ -7,11 +7,14 @@ How to replicate the results:
 Running the R scripts in "Code" sequentially from 01 through 10 replicates the figures, tables, and numbers in our paper.
 The figures and tables are stored in "Output".
 Individual numbers (such as the back-of-the-envelope calculation of the retail losses saved due to the intervention) are printed to the console.
+The code contains relative file paths, which can be used when the scripts are executed through "KO.Rproj".
 
 How to obtain the data:
 Data are not provided in this repository.
 Data for Frankfurt and Gettex are downloaded by scripts 01 through 03.
 Data for SIX and BSW can be downloaded from the websites linked in scripts 06 and 08, respectively.
+In case of incomplete downloads, scripts 02 and 03 can be executed repeatedly to complete the downloads.
+Note that script 03 also attempts to download data for holidays, for which "No data available." is printed to the console.
 
 Main results and additional results:
 To replicate our main results, only scripts 01 through 07 have to be run and it is not necessary to download the BSW data.
